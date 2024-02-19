@@ -106,6 +106,21 @@
 /* === Import template variables === */
 /*-------------------------------------------------------------------*/
 /* === SCSS Compass Functions === */
+#forminput {
+    background: transparent;
+    border: none;
+    color: white !important;
+}
+
+.adminli {
+  list-style: none;
+}
+
+#adminp {
+  text-decoration: none;
+  color: white;
+}
+
 @-moz-keyframes flash {
   0% {
     opacity: 1; }
