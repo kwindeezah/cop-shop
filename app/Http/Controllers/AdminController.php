@@ -59,4 +59,11 @@ class AdminController extends Controller
 
         return view('admin.products', compact('category'));
     }
+
+    public function show_products()
+    {
+        $products = Product::all();
+
+        return view('admin.show_products', compact('products'));
+    }
 }
