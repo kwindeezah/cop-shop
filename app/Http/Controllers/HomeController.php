@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -35,5 +36,34 @@ class HomeController extends Controller
     {
         $product = Product::find($id);
         return view('home.product_details', compact('product'));
+    }
+
+    public function add_to_cart(Request $request, $id)
+    {
+        if(Auth::user())
+        {
+            $user = Auth::user();
+            $product = Product::find($id);
+            $cart = new Cart;
+
+            $cart->user_id = $user->id;
+            $cart->name = $user->name;
+            $cart->email = $user->email;
+            $cart->phone = $user->phone;
+            $cart->address = $user->address;
+            $cart->product_name = $product->title;
+            $cart->price = $product->price;
+            $cart->image = $product->image;
+            $cart->product_id = $product->id;
+            $cart->quantity = $request->quantity;
+
+            $cart->save();
+
+            return redirect()->back();
+        }
+        else
+        {
+            return redirect('login');
+        }
     }
 }
