@@ -54,3 +54,7 @@ Route::post("/add_to_cart/{id}", [HomeController::class, "add_to_cart"]);
 Route::get("/show_cart", [HomeController::class, "show_cart_items"]);
 
 Route::get("/remove_item/{id}", [HomeController::class, "removeItem"]);
+
+Route::post("/cash_order", [HomeController::class, "cashOrder"]);
+
+Route::post("/card_payment", [HomeController::class, "payWithCard"]);

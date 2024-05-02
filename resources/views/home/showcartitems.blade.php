@@ -90,6 +90,13 @@
         <div>
             <h1 class="total_deg">Total Price = {{$totalPrice}}</h1>
         </div>
+        <div>
+            <h1 style="font-size:25px;padding-bottom:15px;">
+                Proceed to Order
+            </h1>
+            <a href="{{url('cash_order')}}" class="btn btn-success">Cash on Delivery</a>
+            <a href="{{url('card_payment')}}" class="btnbtn-success">Pay with Card</a>
+        </div>
       </div>
       <div class="cpy_">
          <p class="mx-auto">© 2021 All Rights Reserved By <a href="https://html.design/">Free Html Templates</a><br>
