@@ -122,8 +122,11 @@ class HomeController extends Controller
             $order->delivery_status = "Unpaid";
 
             $order->save();
-        }
-        return redirect()->back();
 
+            $cartId = $cartItem->id;
+            $eachCartItem = Cart::find($cartId);
+            $eachCartItem->delete();
+        }
+        return redirect()->back()->with('message', 'Thank you for your purchase. Your order is currently being processed!');
     }
 }

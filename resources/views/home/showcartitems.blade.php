@@ -53,6 +53,12 @@
          <!-- header section strats -->
          @include('home.header')
          <!-- end header section -->
+            @if(session()->has('message'))
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" aria-label="close">&times;</button>
+                    {{session()->get('message')}}
+                </div>
+            @endif   
       <div class="center">
         <table>
             <tr>
@@ -95,7 +101,7 @@
                 Proceed to Order
             </h1>
             <a href="{{url('cash_order')}}" class="btn btn-success">Cash on Delivery</a>
-            <a href="{{url('card_payment')}}" class="btnbtn-success">Pay with Card</a>
+            <a href="{{url('card_payment')}}" class="btn btn-success">Pay with Card</a>
         </div>
       </div>
       <div class="cpy_">
