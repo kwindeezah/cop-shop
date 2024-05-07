@@ -118,8 +118,9 @@ class HomeController extends Controller
             $order->image = $cartItem->image;
             $order->quantity = $cartItem->quantity;
             $order->product_id = $cartItem->product_id;
-            $order->payment_status = "Pay On Delivery";
-            $order->delivery_status = "Unpaid";
+            $order->payment_status = "Unpaid";
+            $order->delivery_status = "In progress";
+            $order->payment_method = "Cash on Delivery";
 
             $order->save();
 
@@ -128,5 +129,76 @@ class HomeController extends Controller
             $eachCartItem->delete();
         }
         return redirect()->back()->with('message', 'Thank you for your purchase. Your order is currently being processed!');
+    }
+
+    public function paymentCallback(Request $request)
+    {
+        $reference = $request->reference;
+        $secret_key = env('PAYSTACK_SK');
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.paystack.co/transaction/verify/".$reference,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Bearer $secret_key",
+                "Cache-Control: no-cache",
+            ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $response = json_decode($response);
+        // dd($response);
+
+        if($response->data->status == 'success')
+        {
+            return $this->paymentSuccess($response);
+        } else {
+            return $this->paymentCancel();
+        }
+    }
+
+    public function paymentSuccess($response)
+    {
+        $user = auth()->user();
+        $userId = $user->id;
+        $cart = Cart::where('user_id', $userId)->get();
+
+        foreach($cart as $cartItem)
+        {
+            $order = new Order;
+            
+            $order->name = $cartItem->name;
+            $order->email = $cartItem->email;
+            $order->phone = $cartItem->phone;
+            $order->address = $cartItem->address;
+            $order->user_id = $cartItem->user_id;
+            $order->product_name = $cartItem->product_name;
+            $order->price = $cartItem->price;
+            $order->image = $cartItem->image;
+            $order->quantity = $cartItem->quantity;
+            $order->product_id = $cartItem->product_id;
+            $order->payment_status = "Paid";
+            $order->delivery_status = "In progress";
+            $order->payment_method = $response->data->channel;
+            $order->payment_id = $response->data->reference;
+
+            $order->save();
+
+            $cartId = $cartItem->id;
+            $eachCartItem = Cart::find($cartId);
+            $eachCartItem->delete();
+        }
+        return redirect()->back()->with('message', 'Thank you for your purchase. Your order is currently being processed!');
+    }
+
+    public function paymentCancel()
+    {
+        return redirect()->back()->with('message', 'Your payment couldn\'t be processed, pleas try aagin.');
     }
 }

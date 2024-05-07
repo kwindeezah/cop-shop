@@ -57,4 +57,8 @@ Route::get("/remove_item/{id}", [HomeController::class, "removeItem"]);
 
 Route::get("/cash_order", [HomeController::class, "cashOrder"]);
 
-Route::post("/card_payment", [HomeController::class, "payWithCard"]);
+Route::get('/payment/callback', [HomeController::class, 'paymentCallback'])->name('payment.callback');
+
+Route::get('payment/success', [HomeController::class, 'paymentSuccess']);
+
+Route::get('payment/cancel', [HomeController::class, 'paymentCancel']);

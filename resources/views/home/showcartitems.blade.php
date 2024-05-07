@@ -46,6 +46,9 @@
             font-size: 20px;
             padding: 40px
         }
+        .paystack {
+            margin-top: 10px
+        }
       </style>
    </head>
    <body>
@@ -101,16 +104,38 @@
                 Proceed to Order
             </h1>
             <a href="{{url('cash_order')}}" class="btn btn-success">Cash on Delivery</a>
-            <a href="{{url('card_payment')}}" class="btn btn-success">Pay with Card</a>
+            <form id="paymentForm">
+                <div class="form-submit">
+                    <button type="submit" onclick="payWithPaystack()" class="paystack btn btn-info"> Pay </button>
+                    <input id="amount" type="number" value="{{$totalPrice}}" hidden>
+                </div>
+            </form>
         </div>
-      </div>
-      <div class="cpy_">
-         <p class="mx-auto">© 2021 All Rights Reserved By <a href="https://html.design/">Free Html Templates</a><br>
-         
-            Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
-         
-         </p>
-      </div>
+    </div>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script>
+        const paymentForm = document.getElementById('paymentForm');
+        paymentForm.addEventListener("submit", payWithPaystack, false);
+        function payWithPaystack(e) {
+            e.preventDefault();
+            let handler = PaystackPop.setup({
+                key: "{{ env('PAYSTACK_PK') }}",
+                email: "{{auth()->user()->email}}",
+                amount: document.getElementById('amount').value * 100,
+                onClose: function(){
+                    alert('Window closed.');
+                },
+                callback: function(response){
+                    // let message = 'Payment complete! Reference: ' + response.reference;
+                    // alert(message);
+                    // alert(JSON.stringify(response));
+                    // window.location.href = "{{ route('payment.callback') }}" + response.redirecturl;
+                    window.location.href = response.redirecturl;
+                }
+            });
+            handler.openIframe();
+        }
+    </script>
       <!-- jQery -->
       <script src="home/js/jquery-3.4.1.min.js"></script>
       <!-- popper js -->
