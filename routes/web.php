@@ -49,6 +49,9 @@ Route::post("/update_product/{id}", [AdminController::class, "update_product"]);
 
 Route::get("/product_details/{id}", [HomeController::class, "product_details"]);
 
+Route::get("/view_orders", [AdminController::class, "viewOrders"]);
+
+
 Route::post("/add_to_cart/{id}", [HomeController::class, "add_to_cart"]);
 
 Route::get("/show_cart", [HomeController::class, "show_cart_items"]);
