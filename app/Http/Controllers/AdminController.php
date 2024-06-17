@@ -109,9 +109,18 @@ class AdminController extends Controller
         return redirect()->back()->with('message', 'Product has been updated successfully!');
     }
 
-    public function viewOrders()
+    public function orders()
     {
         $orders = Order::all();
         return view('admin.orders', compact('orders'));
+    }
+
+    public function delivered($id)
+    {
+        $order = Order::find($id);
+        $order->delivery_status = 'Delivered';
+        $order->save();
+
+        return redirect()->back();
     }
 }

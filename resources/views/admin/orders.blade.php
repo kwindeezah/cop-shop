@@ -48,18 +48,18 @@
 
             <table class="table_deg">
               <tr class="th_class">
-                <th>Customer Name</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Phone Number</th>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Payment Status</th>
-                <th>Delivery Status</th>
-                <th>Payment Method</th>
-                <th>Product Image</th>
-                <th>Delivered</th>
+                <th style="padding:15px;">Customer Name</th>
+                <th style="padding:15px;">Email</th>
+                <th style="padding:15px;">Address</th>
+                <th style="padding:15px;">Phone Number</th>
+                <th style="padding:15px;">Product Name</th>
+                <th style="padding:15px;">Price</th>
+                <th style="padding:15px;">Quantity</th>
+                <th style="padding:15px;">Payment Status</th>
+                <th style="padding:15px;">Delivery Status</th>
+                <th style="padding:15px;">Payment Method</th>
+                <th style="padding:15px;">Product Image</th>
+                <th style="padding:15px;">Delivered</th>
               </tr>
               
               @foreach ($orders as $order)
@@ -77,7 +77,15 @@
                 <td>
                     <img class="img_size" src="/products/{{$order->image}}">
                 </td>
-                <td><a href="" class="btn btn-primary">Delivered</a></td>
+                <td>
+
+                  @if($order->delivery_status == 'In progress')
+                    <a href="{{url('delivered', $order->id)}}" onclick="return confirm('Are you sure this item has been delivered?')" class="btn btn-primary">Delivered</a>
+                    @else
+                    <p style="background-color:green;padding:9px;border-radius:8px;">Item has been delivered</p>
+                  @endif
+
+                </td>
                 <td>
                   {{-- <a onclick="return confirm('Are you sure you want to delete this?')" class="btn btn-danger" href="{{url('delete_category', $category->id)}}">Delete</a> --}}
                 </td>
