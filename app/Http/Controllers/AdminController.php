@@ -119,6 +119,11 @@ class AdminController extends Controller
     {
         $order = Order::find($id);
         $order->delivery_status = 'Delivered';
+
+        if($order->payment_status != "Paid")
+        {
+            $order->payment_status = "Paid";
+        }
         $order->save();
 
         return redirect()->back();
