@@ -60,6 +60,7 @@
                 <th style="padding:15px;">Payment Method</th>
                 <th style="padding:15px;">Product Image</th>
                 <th style="padding:15px;">Delivered</th>
+                <th style="padding:15px;">Print PDF</th>
               </tr>
               
               @foreach ($orders as $order)
@@ -87,7 +88,7 @@
 
                 </td>
                 <td>
-                  {{-- <a onclick="return confirm('Are you sure you want to delete this?')" class="btn btn-danger" href="{{url('delete_category', $category->id)}}">Delete</a> --}}
+                  <a onclick="return confirm('Are you sure you want to print this?')" class="btn btn-info" href="{{url('print_pdf', $order->id)}}" style="padding:9px;border-radius:8px;">Print</a>
                 </td>
               </tr>
               @endforeach
